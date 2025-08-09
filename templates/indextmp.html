@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subir y procesar imagen</title>
+</head>
+<body>
+    <h1>Subir imagen</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required>
+        <button type="submit">Cargar</button>
+    </form>
+
+    {% if image_url %}
+        <h2>Imagen cargada:</h2>
+        <img src="{{ image_url }}" alt="Imagen cargada" width="300">
+        <form action="/process" method="post">
+            <input type="hidden" name="image_name" value="{{ image_url.split('/')[-1] }}">
+            <button type="submit">Procesar</button>
+        </form>
+    {% endif %}
+
+    {% if processed_url %}
+        <h2>Imagen procesada:</h2>
+        <img src="{{ processed_url }}" alt="Imagen procesada" width="300">
+    {% endif %}
+    
+    {% if graph_paths %}
+        <h2>Gráficos del procesamiento</h2>
+        {% for path in graph_paths %}
+            <img src="{{ path }}" width="300" style="margin:10px;">
+        {% endfor %}
+    {% endif %}
+    
+    {% if suggestion %}
+        <h3>Sugerencia de técnica avanzada:</h3>
+        <p>{{ suggestion }}</p>
+    {% endif %}
+</body>
+</html>
+

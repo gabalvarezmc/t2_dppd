@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subir y procesar imagen</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 30px;
+        }
+
+        h1, h2, h3 {
+            color: #343a40;
+        }
+
+        form {
+            margin: 20px auto;
+            padding: 15px;
+            background-color: white;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            width: fit-content;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        img {
+            margin: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        }
+
+        .image-block {
+            margin-top: 20px;
+        }
+
+        .suggestion-box {
+            background-color: #e9f7ef;
+            border-left: 5px solid #28a745;
+            padding: 15px;
+            margin: 20px auto;
+            width: 50%;
+            border-radius: 4px;
+            color: #155724;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Subir imagen de Sudoku</h1>
+    
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required><br>
+        <button type="submit">Cargar</button>
+    </form>
+
+    {% if image_url %}
+        <div class="image-block">
+            <h2>Imagen cargada:</h2>
+            <img src="{{ image_url }}" alt="Imagen cargada" width="300">
+            <form action="/process" method="post">
+                <input type="hidden" name="image_name" value="{{ image_url.split('/')[-1] }}">
+                <button type="submit">Procesar</button>
+            </form>
+        </div>
+    {% endif %}
+
+    {% if graph_paths %}
+        <div class="image-block">
+            <h2>Gráficos del procesamiento</h2>
+            {% for path in graph_paths %}
+                <img src="{{ path }}" width="300">
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if suggestion %}
+        <div class="suggestion-box">
+            Sugerencia de técnica avanzada: {{ suggestion }}
+        </div>
+    {% endif %}
+</body>
+</html>
