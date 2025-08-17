@@ -5,10 +5,12 @@ from fastapi.templating import Jinja2Templates
 from PIL import Image
 import shutil
 import os
+import joblib
+from ultralytics import YOLO
+from src.process_image import process_image_v2
 
 app = FastAPI()
 
-# Configura carpetas para archivos estáticos y templates
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
@@ -31,13 +33,9 @@ async def upload_image(request: Request, file: UploadFile = File(...)):
         "image_url": f"/static/uploads/{file.filename}",
         "processed_url": None
     })
-import joblib
-from ultralytics import YOLO
-from process_image_v2 import process_image_v2
+
 model_yolo = YOLO("models/yolo_best.pt")
 model_cnn = joblib.load("models/model_cnn_numbers.joblib")
-# Ejecución de ejemplo
-# path_image = "data/sudoku_complete/data/image98"
 
 @app.post("/process", response_class=HTMLResponse)
 async def process(request: Request, image_name: str = Form(...)):
