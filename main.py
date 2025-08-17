@@ -10,7 +10,10 @@ from ultralytics import YOLO
 from src.process_image import process_image_v2
 
 app = FastAPI()
-
+# if static does not exist create it
+if os.path.exists("static") is False:
+    os.makedirs("static")
+    os.makedirs("static/uploads")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
@@ -67,3 +70,36 @@ async def process(request: Request, image_name: str = Form(...)):
 #         "image_url": f"/static/uploads/{image_name}",
 #         "processed_url": f"/static/uploads/processed_{image_name}"
 #     })
+
+
+from fastapi.responses import JSONResponse
+
+@app.post("/api/suggestion")
+async def api_suggestion(file: UploadFile = File(...)):
+    print(file)
+    # Guardar imagen temporalmente
+    file_ext = file.filename.split(".")[-1].lower()
+    if file_ext not in ["jpg", "jpeg", "png"]:
+        return JSONResponse(content={"error": "Formato no soportado"}, status_code=400)
+
+    temp_filename = f"temp_{file.filename}"
+    image_path = os.path.join(UPLOAD_FOLDER, temp_filename)
+
+    with open(image_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    try:
+        # Ejecutar el procesamiento de imagen
+        image_paths, suggestion, status = process_image_v2(image_path, model_cnn, model_yolo)
+
+        # Eliminar imagen y gráficos generados si se desea
+        os.remove(image_path)
+        for img_path in image_paths:
+            os.remove(img_path)
+
+        return JSONResponse(content={
+            "suggestion": suggestion,
+            "status": status
+        })
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
