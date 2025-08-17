@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import cv2
 import numpy as np
 from PIL import Image
-from sudoku_solver.main import SudokuBoard, suggest_technique
+from src.sudoku_solver.main import SudokuBoard, suggest_technique
 import uuid
 import os
 

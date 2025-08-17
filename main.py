@@ -24,6 +24,9 @@ async def get_form(request: Request):
 
 @app.post("/upload", response_class=HTMLResponse)
 async def upload_image(request: Request, file: UploadFile = File(...)):
+    for filename in os.listdir(UPLOAD_FOLDER):
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        os.remove(file_path)
     image_path = os.path.join(UPLOAD_FOLDER, file.filename)
     with open(image_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
