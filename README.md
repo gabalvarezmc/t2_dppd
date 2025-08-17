@@ -22,7 +22,7 @@ También se expone una API para recibir imágenes y retornar los resultados en f
 
 ## 🛠 Tecnologías
 
-- Python 3.12.7
+- Python 3.12+
 - fastapi==0.116.1
 - uvicorn==0.35.0
 - pydantic==2.11.7
@@ -43,20 +43,28 @@ También se expone una API para recibir imágenes y retornar los resultados en f
 ## 📦 Instalación
 
 1. Clona el repositorio:
+   ```
    bash
    git clone https://github.com/gabalvarezmc/t2_dppd
    cd sudoku-solver-web
+   ```
 
 2. Crea y activa un entorno virtual
+   ```
     python -m venv .venv
     .venv\Scripts\activate
+   ```
 
 3. Instala las dependencias:
+   ```
     pip install -r requirements.txt
+   ```
 
 4. Asegúrate de que existan los siguientes archivos en la carpeta models/:
+   ```
     yolo_best.pt: modelo entrenado para detección de tableros.
     model_cnn_numbers.joblib: modelo CNN para reconocimiento de dígitos.
+   ```
 
 ## ▶️ Uso
 ### 🌐 Interfaz web
@@ -73,40 +81,29 @@ También se expone una API para recibir imágenes y retornar los resultados en f
 Endpoint:
     POST /api/suggestion
 Parámetros:
+    file: imagen del Sudoku (form-data)
 
-file: imagen del Sudoku (form-data)
-
-Ejemplo en Postman:
-
-Método: POST
-
-URL: http://localhost:8000/api/suggestion
-
-Body: form-data
-
-Key: file (tipo: File)
-
-Value: selecciona una imagen .jpg o .png
-
-{
-  "suggestion": "XY-Wing",
-  "status": "ok",
-  "sudoku_digitalized": "530070000600195000098000060800060003400803001700020006060000280000419005000080079"
-}
+Ejemplo de respuesta:
+    {
+        "suggestion": "Naked Single: colocar 5 en columna F, fila 2",
+        "status": "ok",
+        "sudoku_digitalized": "803000002060480103000100000000000900301004000060702420178509300000000758000267000"
+    }
 
 
 ## 💡 Estructura del proyecto
-sudoku-solver-web/
-├── main.py
-├── requirements.txt
-├── static/
-│   └── uploads/
-├── templates/
-│   └── index.html
-├── models/
-│   ├── yolo_best.pt
-│   └── model_cnn_numbers.joblib
-├── src/
-│   ├── process_image.py
-│   └── sudoku_solver/
-│       └── main.py
+
+    sudoku-solver-web/
+    ├── main.py
+    ├── requirements.txt
+    ├── static/
+    │   └── uploads/
+    ├── templates/
+    │   └── index.html
+    ├── models/
+    │   ├── yolo_best.pt
+    │   └── model_cnn_numbers.joblib
+    ├── src/
+    │   ├── process_image.py
+    │   └── sudoku_solver/
+    │       └── main.py
