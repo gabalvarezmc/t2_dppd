@@ -5,7 +5,8 @@ from fastapi.templating import Jinja2Templates
 import shutil
 import os
 import joblib
-from ultralytics import YOLO
+from fastapi.responses import JSONResponse
+# from ultralytics import YOLO
 from src.process_image import process_image_v2
 
 app = FastAPI()
@@ -39,11 +40,12 @@ async def upload_image(request: Request, file: UploadFile = File(...)):
         "processed_url": None
     })
 
-model_yolo = YOLO("models/yolo_best.pt")
+# model_yolo = YOLO("models/yolo_best.pt")
 model_cnn = joblib.load("models/model_cnn_numbers.joblib")
 
 @app.post("/process", response_class=HTMLResponse)
 async def process(request: Request, image_name: str = Form(...)):
+    model_yolo = False
     input_path = os.path.join(UPLOAD_FOLDER, image_name)
     image_paths, suggestion, status, sudoku_digitalized = process_image_v2(input_path, model_cnn, model_yolo)
     print(status)
@@ -55,12 +57,9 @@ async def process(request: Request, image_name: str = Form(...)):
         "suggestion": suggestion
     })
 
-
-
-from fastapi.responses import JSONResponse
-
 @app.post("/api/suggestion")
 async def api_suggestion(file: UploadFile = File(...)):
+    model_yolo = False
     print(file)
     # Guardar imagen temporalmente
     file_ext = file.filename.split(".")[-1].lower()

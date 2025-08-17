@@ -26,20 +26,20 @@ def process_image_v2(path_image, model_cnn, model_yolo):
     # Se aplica BGR to RGB para que el modelo YOLO pueda procesar la imagen correctamente y se convierte a un objeto PIL
     image_rgb = cv2.cvtColor(img_tablero_base, cv2.COLOR_BGR2RGB)
     image_array = Image.fromarray(image_rgb)
-    
-    # Se utiliza el modelo YOLOv8 para detectar el tablero de Sudoku en la imagen
-    results_yolo = model_yolo.predict(source=image_array, conf=0.25, save=False, save_txt=False, save_conf=False, verbose=False)
-    # Se obtiene la lista de probabilidades de detección
-    results_probababilities = results_yolo[0].boxes.conf.cpu().numpy()
-    # Si no se detecta ningún tablero de Sudoku o si la probabilidad es menor a 0.7, se retorna 0.0
-    probability_list = []
-    for probability in results_probababilities:
-        if probability >= 0.7:
-            probability_list.append(probability)
-    if not probability_list:
-        status = "no_sudoku_detected"
-        suggestion = "No se detectó ningún tablero de Sudoku en la imagen."
-        return image_paths, suggestion, status, "0"*81
+    if model_yolo:
+        # Se utiliza el modelo YOLOv8 para detectar el tablero de Sudoku en la imagen
+        results_yolo = model_yolo.predict(source=image_array, conf=0.25, save=False, save_txt=False, save_conf=False, verbose=False)
+        # Se obtiene la lista de probabilidades de detección
+        results_probababilities = results_yolo[0].boxes.conf.cpu().numpy()
+        # Si no se detecta ningún tablero de Sudoku o si la probabilidad es menor a 0.7, se retorna 0.0
+        probability_list = []
+        for probability in results_probababilities:
+            if probability >= 0.7:
+                probability_list.append(probability)
+        if not probability_list:
+            status = "no_sudoku_detected"
+            suggestion = "No se detectó ningún tablero de Sudoku en la imagen."
+            return image_paths, suggestion, status, "0"*81
 
     # Se convierte la imagen a escala de grises
     img_gray = cv2.cvtColor(img_tablero_base, cv2.COLOR_BGR2GRAY) 
@@ -132,11 +132,11 @@ def process_image_v2(path_image, model_cnn, model_yolo):
     # image_paths.append(save_figure(fig1))
 
     # YOLO detección
-    fig2 = plt.figure(figsize=(6, 6))
-    plt.title("Detección de tablero con modelo YOLO")
-    plt.imshow(results_yolo[0].plot())
-    plt.axis('off')
-    image_paths.append(save_figure(fig2))
+    # fig2 = plt.figure(figsize=(6, 6))
+    # plt.title("Detección de tablero con modelo YOLO")
+    # plt.imshow(results_yolo[0].plot())
+    # plt.axis('off')
+    # image_paths.append(save_figure(fig2))
 
     # Contornos
     cv2.drawContours(img_tablero_base, tablero_contours, -1, (0, 255, 0), 3)
