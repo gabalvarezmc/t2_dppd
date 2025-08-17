@@ -39,7 +39,7 @@ def process_image_v2(path_image, model_cnn, model_yolo):
     if not probability_list:
         status = "no_sudoku_detected"
         suggestion = "No se detectó ningún tablero de Sudoku en la imagen."
-        return image_paths, suggestion, status
+        return image_paths, suggestion, status, "0"*81
 
     # Se convierte la imagen a escala de grises
     img_gray = cv2.cvtColor(img_tablero_base, cv2.COLOR_BGR2GRAY) 
@@ -65,7 +65,7 @@ def process_image_v2(path_image, model_cnn, model_yolo):
         print("No se encontró un contorno con 4 puntos")
         status = "no_4_point_contour"
         suggestion = "No se pudo detectar el contorno del tablero de Sudoku."
-        return image_paths, suggestion, status
+        return image_paths, suggestion, status, "0"*81
 
     # Se reorganizan los puntos del contorno para calzar con el orden esperado
     biggest_contour = biggest_contour.reshape(-1, 2)
@@ -113,7 +113,7 @@ def process_image_v2(path_image, model_cnn, model_yolo):
         if valor_probabilidad > 0.4:
             prediccion_tmp = clase_idx[0]
         prediccion_list.append(prediccion_tmp)
-
+    prediccion_list_str = "".join(str(x) for x in prediccion_list)
     # Se redimensiona la lista de predicciones a una matriz de 9x9
     grid = np.asarray(prediccion_list)
     grid = np.reshape(grid, (9, 9))
@@ -173,5 +173,5 @@ def process_image_v2(path_image, model_cnn, model_yolo):
     plt.tight_layout()
     image_paths.append(save_figure(fig5))
 
-    return image_paths, suggestion, "ok"
+    return image_paths, suggestion, "ok", prediccion_list_str
 
