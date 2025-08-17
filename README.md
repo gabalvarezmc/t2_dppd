@@ -67,7 +67,7 @@ También se expone una API para recibir imágenes y retornar los resultados en f
    ```
 
 ## ▶️ Uso
-### 🌐 Interfaz web
+### 🌐 Interfaz web local
 
 1. Inicia el servidor:
     uvicorn main:app --reload
@@ -79,16 +79,24 @@ También se expone una API para recibir imágenes y retornar los resultados en f
 
 ### 🧪 API REST para Postman u otras apps
 Endpoint:
+   ```
     POST /api/suggestion
-Parámetros:
+   ```
+Body:
+   ```
     file: imagen del Sudoku (form-data)
+   ```
+   ![alt text](static/examples/image1.jpg)
+   ![alt text](static/examples/image2.jpg)
 
 Ejemplo de respuesta:
+   ```
     {
         "suggestion": "Naked Single: colocar 5 en columna F, fila 2",
         "status": "ok",
         "sudoku_digitalized": "803000002060480103000100000000000900301004000060702420178509300000000758000267000"
     }
+   ```
 
 
 ## 💡 Estructura del proyecto
@@ -98,6 +106,7 @@ Ejemplo de respuesta:
     ├── requirements.txt
     ├── static/
     │   └── uploads/
+    │   └── examples/
     ├── templates/
     │   └── index.html
     ├── models/
@@ -107,3 +116,14 @@ Ejemplo de respuesta:
     │   ├── process_image.py
     │   └── sudoku_solver/
     │       └── main.py
+    │       └── techniques
+    │           └── basic_techniques.py
+    │           └── cadenas_coloreadas.py
+    │           └── fish_patterns.py
+    │           └── interseccion_linearegion.py
+    │           └── naked_subset.py
+    │           └── rectangulo_unicidad.py
+    │           └── subconjuntos_ocultos.py
+    │           └── xy_chain.py
+    │           └── xy_wing.py
+    │           └── xyz_wing.py
