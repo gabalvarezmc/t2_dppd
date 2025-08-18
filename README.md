@@ -126,6 +126,7 @@ También se expone una API para recibir imágenes y retornar los resultados en f
     sudoku-solver-web/
     ├── main.py
     ├── requirements.txt
+    ├── render.yaml
     ├── static/
     │   └── uploads/
     │   └── examples/
@@ -165,15 +166,19 @@ El servicio se puede utilizar de dos formas:
 
 Se puede predecir utilizando el modelo utilizando la interfaz gráfica desarrollada en HTML. Los pasos son los siguientes:
 
-1. Examinar y seleccionar una fotografía y seleccionar "Cargar".
+1. Abrir URL del servicio en su ruta base:
+   ```
+    https://tarea-2-dpdd.onrender.com/
+   ```
+2. Examinar y seleccionar una fotografía y seleccionar "Cargar".
 
     ![alt text](static/examples/Pantallazo1.PNG)
 
-2. Una vez cargado correctamente, seleccionar "Procesar".
+3. Una vez cargado correctamente, seleccionar "Procesar".
 
     ![alt text](static/examples/Pantallazo2.PNG)
 
-3. Se pueden observar los resultados de la digitalización y predicción.
+4. Se pueden observar los resultados de la digitalización y predicción.
 
     ![alt text](static/examples/Pantallazo3.PNG)
 
@@ -202,6 +207,6 @@ Para probar la API se puede realizar de las siguientes formas:
 
     ![alt text](static/examples/Ejemplo_postman.PNG)
 
-## Tests de funcionamiento del servicio
+## 💡 Tests de funcionamiento del servicio
 
 En el notebook de nombre client.ipynb se pueden encontrar los tests realizados para comprobar el funcionamiento del modelo.
