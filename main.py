@@ -6,7 +6,7 @@ import shutil
 import os
 import joblib
 from pathlib import Path
-from ultralytics import YOLO
+# from ultralytics import YOLO
 from src.process_image import process_image_v2
 from src.schemas import SuggestionResponse
 from fastapi import HTTPException
@@ -42,7 +42,8 @@ async def upload_image(request: Request, file: UploadFile = File(...)):
         "processed_url": None
     })
 
-model_yolo = YOLO("models/yolo_best.pt")
+# model_yolo = YOLO("models/yolo_best.pt")
+model_yolo = False
 model_cnn = joblib.load("models/model_cnn_numbers.joblib")
 
 @app.post("/process", response_class=HTMLResponse)

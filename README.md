@@ -153,7 +153,7 @@ También se expone una API para recibir imágenes y retornar los resultados en f
 
 ## 💡 Servicio habilitado en Render
 
-IMPORTANTE: El servicio cargado en Render no considera la detección del tablero Sudoku con YOLOv8 debido al alto uso de memoria del modelo y a la configuración de uso gratuito de la plataforma. Esta versión se puede encontrar en la rama de este mismo repositorio de nombre "to_render".
+IMPORTANTE: El servicio cargado en Render no considera la detección del tablero Sudoku con YOLOv8 debido al alto uso de memoria del modelo y a la configuración de uso gratuito de la plataforma. Esta versión se puede encontrar en la rama de este mismo repositorio de nombre "service_render".
 
 La URL donde se encuentra deplegado el servicio es:
    ```
