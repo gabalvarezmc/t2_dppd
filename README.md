@@ -88,18 +88,16 @@ También se expone una API para recibir imágenes y retornar los resultados en f
     ```
         file: imagen del Sudoku (form-data). Se permiten jpg, jpeg y png. 
     ```
-- Imágenes de ejemplo:
-
-    - Las imágenes se pueden encontrar en la carpeta static/examples/
-        - Imagen 1
+- Imágenes de ejemplo: Las imágenes se pueden encontrar en la carpeta static/examples/
+    - Imagen 1
 
     ![alt text](static/examples/image202.jpg)
-
-        - Imagen 2
+  
+    - Imagen 2
 
     ![alt text](static/examples/image205.jpg)
 
-        - Imagen 3
+    - Imagen 3
 
     ![alt text](static/examples/classic_img9.jpg)
 
@@ -152,10 +150,6 @@ También se expone una API para recibir imágenes y retornar los resultados en f
     │           └── xy_wing.py
     │           └── xyz_wing.py
 
-COSA 1: AGREGAR PYDANTIC
-
-COSA 2: AGREGAR INSTRUCCIONES PARA EL TEST
-
 ## 💡 Servicio habilitado en Render
 
 IMPORTANTE: El servicio cargado en Render no considera la detección del tablero Sudoku con YOLOv8 debido al alto uso de memoria del modelo y a la configuración de uso gratuito de la plataforma. Esta versión se puede encontrar en la rama de este mismo repositorio de nombre "to_render".
@@ -173,15 +167,15 @@ Se puede predecir utilizando el modelo utilizando la interfaz gráfica desarroll
 
 1. Examinar y seleccionar una fotografía y seleccionar "Cargar".
 
-    ![alt text](static/examples/Pantallazo1.png)
+    ![alt text](static/examples/Pantallazo1.PNG)
 
 2. Una vez cargado correctamente, seleccionar "Procesar".
 
-    ![alt text](static/examples/Pantallazo2.png)
+    ![alt text](static/examples/Pantallazo2.PNG)
 
 3. Se pueden observar los resultados de la digitalización y predicción.
 
-    ![alt text](static/examples/Pantallazo3.png)
+    ![alt text](static/examples/Pantallazo3.PNG)
 
 
 ### Forma 2: API disponible
@@ -206,7 +200,7 @@ Para probar la API se puede realizar de las siguientes formas:
    ```
 2. Desde POSTMAN: Agregar un body de tipo "form-data", configurar una key con nombre "file" y de tipo File y seleccionar la imagen a probar.
 
-    ![alt text](static/examples/Ejemplo_postman.png)
+    ![alt text](static/examples/Ejemplo_postman.PNG)
 
 ## Tests de funcionamiento del servicio
 
