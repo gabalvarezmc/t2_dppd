@@ -43,25 +43,24 @@ También se expone una API para recibir imágenes y retornar los resultados en f
 ## 📦 Instalación
 
 1. Clona el repositorio:
-   ```
-   bash
+   ```cmd
    git clone https://github.com/gabalvarezmc/t2_dppd
    cd sudoku-solver-web
    ```
 
 2. Crea y activa un entorno virtual
-   ```
+   ```cmd
     python -m venv .venv
     .venv\Scripts\activate
    ```
 
 3. Instala las dependencias:
-   ```
+   ```cmd
     pip install -r requirements.txt
    ```
 
 4. Asegúrate de que existan los siguientes archivos en la carpeta models/:
-   ```
+   ```cmd
     yolo_best.pt: modelo entrenado para detección de tableros.
     model_cnn_numbers.joblib: modelo CNN para reconocimiento de dígitos.
    ```
@@ -73,7 +72,7 @@ También se expone una API para recibir imágenes y retornar los resultados en f
     uvicorn main:app --reload
 
 2. Abre tu navegador en:
-    http://localhost:8000
+    http://127.0.0.1:8000
 
 3. Sube una imagen de un Sudoku y presiona "Procesar" para ver los gráficos intermedios y la sugerencia de técnica.
 
@@ -84,17 +83,27 @@ Endpoint:
    ```
 Body:
    ```
-    file: imagen del Sudoku (form-data)
+    file: imagen del Sudoku (form-data). Se permiten jpg, jpeg y png. 
    ```
+Imágenes de ejemplo:
    ![alt text](static/examples/image1.jpg)
    ![alt text](static/examples/image2.jpg)
 
-Ejemplo de respuesta:
+Ejemplo de respuesta al encontrar tablero:
    ```
     {
         "suggestion": "Naked Single: colocar 5 en columna F, fila 2",
         "status": "ok",
         "sudoku_digitalized": "803000002060480103000100000000000900301004000060702420178509300000000758000267000"
+    }
+   ```
+
+Ejemplo de respuesta al NO encontrar tablero:
+   ```
+    {
+        "suggestion": "No se detectó ningún tablero de Sudoku en la imagen.",
+        "status": "no_sudoku_detected",
+        "sudoku_digitalized": "000000000000000000000000000000000000000000000000000000000000000000000000000000000"
     }
    ```
 

@@ -130,13 +130,13 @@ def process_image_v2(path_image, model_cnn, model_yolo):
     # plt.imshow(img_tablero_base, cmap='gray')
     # plt.axis('off')
     # image_paths.append(save_figure(fig1))
-
-    # YOLO detección
-    # fig2 = plt.figure(figsize=(6, 6))
-    # plt.title("Detección de tablero con modelo YOLO")
-    # plt.imshow(results_yolo[0].plot())
-    # plt.axis('off')
-    # image_paths.append(save_figure(fig2))
+    if model_yolo:
+        # YOLO detección
+        fig2 = plt.figure(figsize=(6, 6))
+        plt.title("Detección de tablero con modelo YOLO")
+        plt.imshow(results_yolo[0].plot())
+        plt.axis('off')
+        image_paths.append(save_figure(fig2))
 
     # Contornos
     cv2.drawContours(img_tablero_base, tablero_contours, -1, (0, 255, 0), 3)
