@@ -5,9 +5,12 @@ from fastapi.templating import Jinja2Templates
 import shutil
 import os
 import joblib
-from fastapi.responses import JSONResponse
+from pathlib import Path
 from ultralytics import YOLO
 from src.process_image import process_image_v2
+from src.schemas import SuggestionResponse
+from fastapi import HTTPException
+
 
 app = FastAPI()
 if os.path.exists("static") is False:
@@ -65,13 +68,16 @@ async def process(request: Request, image_name: str = Form(...)):
             "error_message": str(e)
         })
 
-
-@app.post("/api/suggestion")
+@app.post("/api/suggestion", response_model=SuggestionResponse)
 async def api_suggestion(file: UploadFile = File(...)):
     file_ext = file.filename.split(".")[-1].lower()
     if file_ext not in ["jpg", "jpeg", "png"]:
-        return JSONResponse(content={"error": "Formato no soportado"}, status_code=400)
+        raise HTTPException(status_code=400, detail="Formato no soportado. Solo se permiten imágenes .jpg, .jpeg y .png")
     temp_filename = f"temp_{file.filename}"
+
+    safe_filename = Path(file.filename).name
+    temp_filename = f"temp_{safe_filename}"
+
     image_path = os.path.join(UPLOAD_FOLDER, temp_filename)
     with open(image_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
@@ -80,11 +86,10 @@ async def api_suggestion(file: UploadFile = File(...)):
         for filename in os.listdir(UPLOAD_FOLDER):
             file_path = os.path.join(UPLOAD_FOLDER, filename)
             os.remove(file_path)
-
-        return JSONResponse(content={
-            "suggestion": suggestion,
-            "status": status,
-            "sudoku_digitalized": sudoku_digitalized,
-        })
+        return SuggestionResponse(
+            suggestion=suggestion,
+            status=status,
+            sudoku_digitalized=sudoku_digitalized
+        )
     except Exception as e:
-        return JSONResponse(content={"error": str(e)}, status_code=500)
+        raise HTTPException(status_code=500, detail=str(e))

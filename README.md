@@ -67,10 +67,14 @@ También se expone una API para recibir imágenes y retornar los resultados en f
 ### 🌐 Interfaz web local
 
 1. Inicia el servidor:
+   ```
     uvicorn main:app --reload
+   ```
 
 2. Abre tu navegador en:
-    http://127.0.0.1:8000
+   ```
+    http://localhost:8000
+   ```
 
 3. Sube una imagen de un Sudoku y presiona "Procesar" para ver los gráficos intermedios y la sugerencia de técnica.
 
@@ -85,10 +89,20 @@ También se expone una API para recibir imágenes y retornar los resultados en f
         file: imagen del Sudoku (form-data). Se permiten jpg, jpeg y png. 
     ```
 - Imágenes de ejemplo:
-    - Imágen 1
-   ![alt text](static/examples/image1.jpg)
-    - Imágen 2
-   ![alt text](static/examples/image2.jpg)
+
+    - Las imágenes se pueden encontrar en la carpeta static/examples/
+        - Imagen 1
+
+    ![alt text](static/examples/image202.jpg)
+
+        - Imagen 2
+
+    ![alt text](static/examples/image205.jpg)
+
+        - Imagen 3
+
+    ![alt text](static/examples/classic_img9.jpg)
+
 
 - Ejemplo de respuesta al encontrar tablero:
    ```
@@ -137,3 +151,63 @@ También se expone una API para recibir imágenes y retornar los resultados en f
     │           └── xy_chain.py
     │           └── xy_wing.py
     │           └── xyz_wing.py
+
+COSA 1: AGREGAR PYDANTIC
+
+COSA 2: AGREGAR INSTRUCCIONES PARA EL TEST
+
+## 💡 Servicio habilitado en Render
+
+IMPORTANTE: El servicio cargado en Render no considera la detección del tablero Sudoku con YOLOv8 debido al alto uso de memoria del modelo y a la configuración de uso gratuito de la plataforma. Esta versión se puede encontrar en la rama de este mismo repositorio de nombre "to_render".
+
+La URL donde se encuentra deplegado el servicio es:
+   ```
+    https://tarea-2-dpdd.onrender.com/
+   ```
+
+El servicio se puede utilizar de dos formas:
+
+### Forma 1: Interfaz HTML
+
+Se puede predecir utilizando el modelo utilizando la interfaz gráfica desarrollada en HTML. Los pasos son los siguientes:
+
+1. Examinar y seleccionar una fotografía y seleccionar "Cargar".
+
+    ![alt text](static/examples/Pantallazo1.png)
+
+2. Una vez cargado correctamente, seleccionar "Procesar".
+
+    ![alt text](static/examples/Pantallazo2.png)
+
+3. Se pueden observar los resultados de la digitalización y predicción.
+
+    ![alt text](static/examples/Pantallazo3.png)
+
+
+### Forma 2: API disponible
+
+URL de API:
+
+   ```
+    https://tarea-2-dpdd.onrender.com/api/suggestion
+    Método POST
+   ```
+
+Para probar la API se puede realizar de las siguientes formas:
+
+1. Con código python: Se puede cargar la imagen y hacer un request con el siguiente código.
+   ```
+    import requests
+    image_path = "path_imagen" 
+    with open(image_path, "rb") as img_file:
+        files = {"file": (image_path, img_file, "image/jpeg")}
+        response = requests.post(url, files=files)
+        print(response.json())
+   ```
+2. Desde POSTMAN: Agregar un body de tipo "form-data", configurar una key con nombre "file" y de tipo File y seleccionar la imagen a probar.
+
+    ![alt text](static/examples/Ejemplo_postman.png)
+
+## Tests de funcionamiento del servicio
+
+En el notebook de nombre client.ipynb se pueden encontrar los tests realizados para comprobar el funcionamiento del modelo.
