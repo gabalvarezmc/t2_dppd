@@ -6,7 +6,7 @@ Jinja2
 python-multipart
 numpy
 opencv-python
-# ultralytics
+ultralytics
 matplotlib
 joblib
 scikit-learn
