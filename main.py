@@ -45,34 +45,38 @@ model_cnn = joblib.load("models/model_cnn_numbers.joblib")
 @app.post("/process", response_class=HTMLResponse)
 async def process(request: Request, image_name: str = Form(...)):
     input_path = os.path.join(UPLOAD_FOLDER, image_name)
-    image_paths, suggestion, status, sudoku_digitalized = process_image_v2(input_path, model_cnn, model_yolo)
-    print(status)
-    return templates.TemplateResponse("index.html", {
-        "request": request,
-        "image_url": f"/static/uploads/{image_name}",
-        "processed_url": None,
-        "graph_paths": image_paths,
-        "suggestion": suggestion
-    })
+    try:
+        image_paths, suggestion, status, sudoku_digitalized = process_image_v2(input_path, model_cnn, model_yolo)
+        return templates.TemplateResponse("index.html", {
+            "request": request,
+            "image_url": f"/static/uploads/{image_name}",
+            "processed_url": None,
+            "graph_paths": image_paths,
+            "suggestion": suggestion,
+            "error_message": None
+        })
+    except Exception as e:
+        return templates.TemplateResponse("index.html", {
+            "request": request,
+            "image_url": f"/static/uploads/{image_name}",
+            "processed_url": None,
+            "graph_paths": [],
+            "suggestion": None,
+            "error_message": str(e)
+        })
+
 
 @app.post("/api/suggestion")
 async def api_suggestion(file: UploadFile = File(...)):
-    # Guardar imagen temporalmente
     file_ext = file.filename.split(".")[-1].lower()
     if file_ext not in ["jpg", "jpeg", "png"]:
         return JSONResponse(content={"error": "Formato no soportado"}, status_code=400)
-
     temp_filename = f"temp_{file.filename}"
     image_path = os.path.join(UPLOAD_FOLDER, temp_filename)
-
     with open(image_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
-
     try:
-        # Ejecutar el procesamiento de imagen
         image_paths, suggestion, status, sudoku_digitalized = process_image_v2(image_path, model_cnn, model_yolo)
-
-        # Eliminar imagen y gráficos generados si se desea
         for filename in os.listdir(UPLOAD_FOLDER):
             file_path = os.path.join(UPLOAD_FOLDER, filename)
             os.remove(file_path)

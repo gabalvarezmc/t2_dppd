@@ -22,7 +22,7 @@ También se expone una API para recibir imágenes y retornar los resultados en f
 
 ## 🛠 Tecnologías
 
-- Python 3.12+
+- Python 3.12.x
 - fastapi==0.116.1
 - uvicorn==0.35.0
 - pydantic==2.11.7
@@ -60,10 +60,8 @@ También se expone una API para recibir imágenes y retornar los resultados en f
    ```
 
 4. Asegúrate de que existan los siguientes archivos en la carpeta models/:
-   ```cmd
-    yolo_best.pt: modelo entrenado para detección de tableros.
-    model_cnn_numbers.joblib: modelo CNN para reconocimiento de dígitos.
-   ```
+    - yolo_best.pt: modelo entrenado para detección de tableros.
+    - model_cnn_numbers.joblib: modelo CNN para reconocimiento de dígitos.
 
 ## ▶️ Uso
 ### 🌐 Interfaz web local
@@ -77,19 +75,22 @@ También se expone una API para recibir imágenes y retornar los resultados en f
 3. Sube una imagen de un Sudoku y presiona "Procesar" para ver los gráficos intermedios y la sugerencia de técnica.
 
 ### 🧪 API REST para Postman u otras apps
-Endpoint:
-   ```
-    POST /api/suggestion
-   ```
-Body:
-   ```
-    file: imagen del Sudoku (form-data). Se permiten jpg, jpeg y png. 
-   ```
-Imágenes de ejemplo:
+- Detalles de API:
+    - Endpoint:
+    ```
+        POST /api/suggestion
+    ```
+    - Body:
+    ```
+        file: imagen del Sudoku (form-data). Se permiten jpg, jpeg y png. 
+    ```
+- Imágenes de ejemplo:
+    - Imágen 1
    ![alt text](static/examples/image1.jpg)
+    - Imágen 2
    ![alt text](static/examples/image2.jpg)
 
-Ejemplo de respuesta al encontrar tablero:
+- Ejemplo de respuesta al encontrar tablero:
    ```
     {
         "suggestion": "Naked Single: colocar 5 en columna F, fila 2",
@@ -98,7 +99,7 @@ Ejemplo de respuesta al encontrar tablero:
     }
    ```
 
-Ejemplo de respuesta al NO encontrar tablero:
+- Ejemplo de respuesta al NO encontrar tablero:
    ```
     {
         "suggestion": "No se detectó ningún tablero de Sudoku en la imagen.",
